@@ -11,7 +11,8 @@ This is a no-code AI agent designed to automatically send delivery emails for sh
 
 ## 📷 Screenshot
 
-<img src="./screenshot.png" alt="Shop Email Agent Screenshot" width="600"/>
+<img src="!(https://github.com/user-attachments/assets/6dc9ed5e-7b8b-4541-9a85-1cf8d8700c11)" alt="Shop Email Agent Screenshot" width="600"/>
+
 
 ## ⚙️ How It Works
 
