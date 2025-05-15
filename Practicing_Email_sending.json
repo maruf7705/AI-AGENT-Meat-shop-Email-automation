@@ -1,0 +1,540 @@
+{
+  "name": "Practicing Email sending",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Meat Order Form",
+        "formDescription": "Please select the meat type, quantity (in kilograms), and preferred condition (fresh or frozen). Once submitted, we will review your order and contact you for confirmation.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full Name",
+              "placeholder": "Karim Islam",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Contact Number",
+              "placeholder": "+880 1700-555501",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email Address ",
+              "placeholder": "karim@your-mail.com",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Meat Type",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Beef"
+                  },
+                  {
+                    "option": "Chicken"
+                  },
+                  {
+                    "option": "Lamb"
+                  },
+                  {
+                    "option": "Goat"
+                  },
+                  {
+                    "option": "Duck"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Enter quantity (KG) for each selected meat.",
+              "placeholder": "5KG",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Meat Condition",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Fresh"
+                  },
+                  {
+                    "option": "Frozen"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "payment method",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Cash on Delivery"
+                  },
+                  {
+                    "option": "Credit/Debit Card"
+                  },
+                  {
+                    "option": "Bank Transfer"
+                  },
+                  {
+                    "option": "Mobile Payment (e.g., Apple Pay, Google Pay)"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "01a795cf-ff6d-44b1-b9fd-4a441626f6a8",
+      "name": "On form submission",
+      "webhookId": "8573c8e9-a409-41d9-8b19-203907d97c0f"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json['Email Address '] }}",
+        "subject": "Please Confirm Your Order Details",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        520,
+        0
+      ],
+      "id": "90f1f72d-7d9d-4ddb-917e-ab1d07093944",
+      "name": "Gmail",
+      "webhookId": "deac9275-890d-4826-a1d6-79c9c626e0d7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0tMRuQhfQ49EiPA6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a helpful , smart and intelligent email writer assistant",
+        "options": {
+          "systemMessage": "=You task is customize an email using following data.\n\nFull Name:{{ $json['Full Name'] }} \nContact Name: {{ $json['Contact Number'] }}\nEmail Address: {{ $json['Email Address '] }}\nMeat Type:{{ $json['Meat Type'] }}\nEnter quantity (KG) for each selected meat: {{ $json['Enter quantity (KG) for each selected meat.'] }}\nMeat Condition:{{ $json['Meat Condition'] }}\nPayment Method:{{ $json['payment method'] }}\n\nDo naver add another instaction and naver add subject \n----\n\nDear {Full Name},\n\nWe have noticed that you are ordering {Enter quantity (KG) for each selected meat} kg of {Meat Type} meat from our shop. You have chosen {Payment Method} as your payment method, and your contact number is {Number}.\n\nPlease carefully check all the information you have entered. If everything is correct, kindly complete your order.\n\nThank you for choosing our shop. We look forward to serving you.\n\nBest regards,\nMT Meat Shop"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        200,
+        0
+      ],
+      "id": "dc8ee9a6-9ff5-44b4-b31a-1e9dc364e7e9",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-04-17-thinking",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        140,
+        220
+      ],
+      "id": "96f87405-137b-41c5-aee8-054fa983e5db",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "CB7hRngOKGgxBDW0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-04-17-thinking",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        220
+      ],
+      "id": "32433aeb-bed2-41ff-97e7-a06983306cab",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "CB7hRngOKGgxBDW0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "get",
+        "threadId": "={{ $json.threadId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        860,
+        -40
+      ],
+      "id": "1fba564a-9251-44b6-8d17-8f19535a11cb",
+      "name": "Gmail1",
+      "webhookId": "7401b9ef-0014-40c4-b0fa-bc34d517a764",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0tMRuQhfQ49EiPA6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a helpful , smart and intelligent email writer assistant",
+        "options": {
+          "systemMessage": "=Client reply: {{ $json.messages[1].snippet }}\n\nYour task is to reply to the client's email. In the reply, you may find unnecessary email data — we don’t need this, so please delete it.\nFor example:\nOn Thu, 15 May 2025 at 12:22, sX@gmail.com wrote: Dear X,...\n\n---\nDo naver add another instaction and naver add subject .\n---\n\nIf the client wants to make a change, ask them to clarify what they want to change. Finish Email.\n\nIf the requested change is already mentioned in their email, then make a confirmation email accordingly.\n(I will send client one last email) ,mention your delivery is processing ---\n\nOur shop name\nMT Meat Shop"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1040,
+        -120
+      ],
+      "id": "4768c523-58fc-4d67-bc72-6a9691c08a24",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json['Email Address '] }}",
+        "subject": "What Would You Like to Update?",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1400,
+        -260
+      ],
+      "id": "bea792d0-b007-4cf9-a6c4-53fa5a169b20",
+      "name": "Gmail3",
+      "webhookId": "38d82bb8-f225-4ab1-a9c5-807a7ec7b8d2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0tMRuQhfQ49EiPA6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        680,
+        0
+      ],
+      "id": "21f86187-3eda-4175-beca-beceeda93249",
+      "name": "Wait",
+      "webhookId": "55eef675-7c9a-4fc7-a54f-fa5e62bb9228"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1560,
+        -260
+      ],
+      "id": "37f17af6-590f-4608-8d70-b2f8438f16d4",
+      "name": "Wait1",
+      "webhookId": "55eef675-7c9a-4fc7-a54f-fa5e62bb9228"
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "get",
+        "threadId": "={{ $json.threadId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1740,
+        -260
+      ],
+      "id": "5f829cff-d562-48a0-972a-f0da12832eec",
+      "name": "Gmail4",
+      "webhookId": "7401b9ef-0014-40c4-b0fa-bc34d517a764",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0tMRuQhfQ49EiPA6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a helpful , smart and intelligent email writer assistant",
+        "options": {
+          "systemMessage": "=Client reply: {{ $json.messages[1].snippet }}\n\nYour task is to reply to the client's email. In the reply, you may find unnecessary email data — we don’t need this, so please delete it.\nFor example:\nOn Thu, 15 May 2025 at 12:22, sX@gmail.com wrote: Dear X,...\n\n---\nDo naver add another instaction and naver add subject .\n---\n\nFollow the client's requested change in their email, then make a confirmation email accordingly.\n(I will send client one last email) ,mention your delivery is processing -\n----\nOur shop name\nMT Meat Shop"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1900,
+        -260
+      ],
+      "id": "2ad49c67-ee55-4469-9510-ea94bb5c03a6",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-04-17-thinking",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1860,
+        -60
+      ],
+      "id": "2445c569-a4ae-4f31-8fbe-18ff09b93b5a",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "CB7hRngOKGgxBDW0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json['Email Address '] }}",
+        "subject": "Please Confirm Your Order Details",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2220,
+        -260
+      ],
+      "id": "32da021a-2168-4f6d-8733-cf99e50c477f",
+      "name": "Gmail5",
+      "webhookId": "deac9275-890d-4826-a1d6-79c9c626e0d7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0tMRuQhfQ49EiPA6",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Gmail3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Gmail1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail3": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Gmail4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Gmail5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3aeba028-4049-419a-925b-ef271ede0d52",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "803654d32c22ac1d3cbaf1ee2ed2bde97f9cba332ac43e117178c659ed22a8e4"
+  },
+  "id": "u7zZi3bh7oriSvk3",
+  "tags": []
+}
+
+{
+  "name": "Learing Email sending part 2"
+  "nodes": [
+    {
+      "parameters":{
+        no.description: "This is a test email",
+      }
+      "type": "n8n-.base.emailSend",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2",
+    }
+  ]
+}
