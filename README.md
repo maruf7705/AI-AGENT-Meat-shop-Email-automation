@@ -1,4 +1,4 @@
-# 🛒 No-Code AI Email Agent for Shop Deliveries
+# 🛒 AI Email Agent for Shop Deliveries
 
 This is a no-code AI agent designed to automatically send delivery emails for shop orders. Originally built for a meat shop, this agent can be **fully customized** for any type of store—groceries, bakeries, electronics, and more!
 
