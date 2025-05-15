@@ -520,21 +520,3 @@
   "id": "u7zZi3bh7oriSvk3",
   "tags": []
 }
-
-{
-  "name": "Learing Email sending part 2"
-  "nodes": [
-    {
-      "parameters":{
-        no.description: "This is a test email",
-      }
-      "type": "n8n-.base.emailSend",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "2",
-    }
-  ]
-}
